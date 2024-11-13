@@ -1,5 +1,6 @@
 package com.joy.queue;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -25,8 +26,10 @@ public abstract class AbstractWaitQueueExecutor implements WaitQueueExecutor {
 
     private volatile boolean isRunning = false;
 
+    @Setter
     private Long waitInterval = 30 * 1000L;
 
+    @Setter
     private Integer failFitCount = 100;
 
     private Future<?> threadFuture;
@@ -106,7 +109,7 @@ public abstract class AbstractWaitQueueExecutor implements WaitQueueExecutor {
 
     private void runInternalSingle() throws InterruptedException {
         List<String> tmpList = new LinkedList<>(queueSet.keySet());
-        if (tmpList.size() == 0) {
+        if (tmpList.isEmpty()) {
             this.waitSingle();
             return;
         }
@@ -159,17 +162,6 @@ public abstract class AbstractWaitQueueExecutor implements WaitQueueExecutor {
         return hasFetch;
     }
 
-    /**
-     * 具体业务实现
-     *
-     * @param queueName
-     * @param subject
-     * @return
-     */
-    public boolean processByQueueName(String queueName, String subject) {
-        return this.processByQueueName(queueName, subject);
-    }
-
     public boolean processByQueueName(String queueName, String subject, Object extData) {
         return false;
     }
@@ -187,16 +179,11 @@ public abstract class AbstractWaitQueueExecutor implements WaitQueueExecutor {
         }
     }
 
-
     public Long getWaitInterval() {
         if (waitInterval == null || waitInterval <= 0L) {
             waitInterval = 5000L;
         }
         return waitInterval;
-    }
-
-    public void setWaitInterval(Long waitInterval) {
-        this.waitInterval = waitInterval;
     }
 
     public Integer getFailFitCount() {
@@ -205,9 +192,4 @@ public abstract class AbstractWaitQueueExecutor implements WaitQueueExecutor {
         }
         return failFitCount;
     }
-
-    public void setFailFitCount(Integer failFitCount) {
-        this.failFitCount = failFitCount;
-    }
-
 }

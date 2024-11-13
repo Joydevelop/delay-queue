@@ -31,5 +31,4 @@ public class DefaultWaitQueueExecutor extends AbstractWaitQueueExecutor {
         }
         return false;
     }
-
 }

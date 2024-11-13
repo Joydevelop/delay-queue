@@ -7,6 +7,13 @@ import com.joy.entity.WaitQueueInfo;
  */
 public interface WaitQueueProvider {
 
+    /**
+     * 入列
+     *
+     * @param queueName 队列名称
+     * @param subject   排队数据
+     * @return 排队情况
+     */
     default WaitQueueInfo enqueue(String queueName, String subject) {
         return enqueue(queueName, subject, null);
     }
